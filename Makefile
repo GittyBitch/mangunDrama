@@ -9,11 +9,11 @@ all: echo_url
 
 .PHONY: echo_url
 echo_url: create_function_url_config
-	@echo "Endpoint: $$(aws lambda create-function-url-config \
+	aws lambda create-function-url-config \
 		--function-name $(FUNC_NAME) \
 		--auth-type NONE \
 		--query 'FunctionUrlConfig.FunctionUrl' \
-		--output text)"
+		--output text
 
 .PHONY: create_function_url_config
 create_function_url_config: create_function #add_permission
@@ -28,7 +28,7 @@ add_permission: create_function
 		--function-url-auth-type NONE
 
 .PHONY: create_role
-create_role:
+create_role: #FIXME
 	$(eval ROLE := $(shell aws iam create-role \
 		--role-name $(ROLE_NAME) \
 		--assume-role-policy-document file://trust-policy.json \
@@ -42,23 +42,23 @@ attach_policy: create_role
 
 .PHONY: create_function
 create_function: publish_layer #create_role attach_policy publish_layer 
-	$(eval FUNCTION := $(shell aws lambda create-function \
+	aws lambda create-function \
 		--function-name $(FUNC_NAME) \
 		--runtime $(PYTHON_VERSION) \
 		--role $(ROLE) \
 		--handler main.handler \
 		--layers $(LAYER) \
-		--zip-file fileb://$(APP)))
+		--zip-file fileb://$(APP)
 
 .PHONY: publish_layer
 publish_layer: myLayer.zip
-	$(eval LAYER := $(shell aws lambda publish-layer-version \
+	aws lambda publish-layer-version \
 		--compatible-architectures x86_64 \
 		--layer-name $(LAYER_NAME) \
 		--description "fastapi+mangum" \
 		--zip-file fileb://myLayer.zip \
 		--compatible-runtimes $(PYTHON_VERSION) \
-		--license-info "egal" --query "LayerVersionArn" --output text))
+		--license-info "egal" --query "LayerVersionArn" --output text
 
 myLayer.zip: tmp
 	cd tmp/ && zip -r ../myLayer.zip .
