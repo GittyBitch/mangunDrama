@@ -4,8 +4,11 @@ FUNC_NAME=mangun-demo
 ROLE_NAME=myrole
 LAYER_NAME=$(FUNC_NAME)
 POLICY_ARN=arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+LAYER=$(FUNC_NAME)
 
 all: echo_url
+
+ROLE_ARN := $(shell aws iam get-role --role-name myrole --query 'Role.Arn' --output text)
 
 .PHONY: echo_url
 echo_url: create_function_url_config
@@ -45,7 +48,7 @@ create_function: publish_layer #create_role attach_policy publish_layer
 	aws lambda create-function \
 		--function-name $(FUNC_NAME) \
 		--runtime $(PYTHON_VERSION) \
-		--role-name myrole \
+		--role $(ROLE_ARN) \
 		--handler main.handler \
 		--layers $(LAYER) \
 		--zip-file fileb://$(APP)
