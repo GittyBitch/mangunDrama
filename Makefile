@@ -8,7 +8,8 @@ LAYER=$(FUNC_NAME)
 
 all: echo_url
 
-ROLE_ARN := $(shell aws iam get-role --role-name myrole --query 'Role.Arn' --output text)
+#ROLE_ARN := $(shell aws iam get-role --role-name myrole --query 'Role.Arn' --output text)
+ROLE_ARN=arn:aws:sts::871751837375:assumed-role/myManGumBuilder/AWSCodeBuild-370d18ed-4228-4fd3-a869-7967fe9cb58d
 
 .PHONY: echo_url
 echo_url: create_function_url_config
