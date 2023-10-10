@@ -16,7 +16,7 @@ echo_url: create_function_url_config
 		--output text)"
 
 .PHONY: create_function_url_config
-create_function_url_config: #add_permission
+create_function_url_config: create_function #add_permission
 
 .PHONY: add_permission
 add_permission: create_function
