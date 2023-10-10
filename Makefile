@@ -1,4 +1,4 @@
-PYTHON_VERSION=python3.10
+PYTHON_VERSION=python3.9
 APP=main.zip
 FUNC_NAME=mangun-demo
 ROLE_NAME=myrole
