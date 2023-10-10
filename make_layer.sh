@@ -49,5 +49,6 @@ URL=$(aws lambda create-function-url-config \
   --query 'FunctionUrlConfig.FunctionUrl' \
   --output text)
 
-#echo "Endpoint: $URL"
+# aws lambda get-function-url-config --function-name mangun-demo --output text --query FunctionUrl
+echo "Endpoint: $URL"
 
