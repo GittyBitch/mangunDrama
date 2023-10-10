@@ -45,7 +45,7 @@ create_function: publish_layer #create_role attach_policy publish_layer
 	aws lambda create-function \
 		--function-name $(FUNC_NAME) \
 		--runtime $(PYTHON_VERSION) \
-		--role $(ROLE) \
+		--role-name myrole \
 		--handler main.handler \
 		--layers $(LAYER) \
 		--zip-file fileb://$(APP)
